@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: seata-demo-at-sample-rm2
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://127.0.0.1:8848
+        ip: 127.0.0.1
+      config:
+        server-addr: http://127.0.0.1:8848
+        group: SEATA_TEST_SAMPLE_GROUP
+        file-extension: yaml
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      #PhysicalNamingStrategyStandardImpl
+    database: mysql
+    #jpa自动建表默认引擎为MyISAM，添加以下配置，修改为InnoDBD
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+server:
+  port: 10001
+dubbo:
+  scan:
+    # 指定 Dubbo 服务实现类的扫描基准包
+    base-packages: com.narcos.seata.demo.at.sample.rm2
+  protocol:
+    # dubbo协议
+    name: dubbo
+    # dubbo协议端口(-1表示自增端口,从 20880 开始)
+    port: -1
+  registry:
+    address: spring-cloud://127.0.0.1
+  consumer:
+    check: false
+seata:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group: DEFAULT_GROUP
+  # 关闭数据源代理
+  enable-auto-data-source-proxy: true
